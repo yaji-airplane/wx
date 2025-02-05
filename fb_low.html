@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下層悪天予想図</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 10px;
+        }
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .grid-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>下層悪天予想図</h1>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>FBSP</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbsp39.png" alt="FBSP">
+        </div>
+        <div class="grid-item">
+            <h2>FBSN</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbsn39.png" alt="FBSN">
+        </div>
+        <div class="grid-item">
+            <h2>FBTK</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbtk39.png" alt="FBTK">
+        </div>
+        <div class="grid-item">
+            <h2>FBOS</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbos39.png" alt="FBOS">
+        </div>
+        <div class="grid-item">
+            <h2>FBKG</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbkg39.png" alt="FBKG">
+        </div>
+        <div class="grid-item">
+            <h2>FBOK</h2>
+            <img src="https://www.data.jma.go.jp/airinfo/data/pict/low-level_sigwx/fbok39.png" alt="FBOK">
+        </div>
+    </div>
+</body>
+</html>
