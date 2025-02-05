@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天気図表示</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 0px;
+        }
+        button {
+            margin: 3px;
+            padding: 1px 15px;
+            font-size: 16px;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 5px;
+        }
+        #debug {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        function getUTCDateFromLocal() {
+            const now = new Date();
+            const utcYear = now.getUTCFullYear();
+            const utcMonth = ('0' + (now.getUTCMonth() + 1)).slice(-2); // 月を2桁にフォーマット
+            const utcDay = ('0' + now.getUTCDate()).slice(-2); // 日を2桁にフォーマット
+            const utcHours = now.getUTCHours();
+            const utcMinutes = now.getUTCMinutes();
+            return {
+                date: new Date(Date.UTC(utcYear, utcMonth - 1, utcDay, utcHours, utcMinutes)),
+                formatted: `${utcYear}${utcMonth}${utcDay}`
+            };
+        }
+
+        function getURL(type, utc) {
+            const utcHours = utc.date.getUTCHours();
+            const utcMinutes = utc.date.getUTCMinutes();
+            const base = `https://www3.metair.go.jp/pict/${type}/`;
+            let url = '';
+
+            switch(type) {
+                case 'ASAS':
+                    if (utcHours > 20 || (utcHours === 20 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}180000.png`;
+                    else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
+                    else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
+                    else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
+                    break;
+                case 'FSAS24':
+                    if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}120000.png`;
+                    else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}000000.png`;
+                    break;
+                case 'ABJP':
+                    if (utcHours > 21 || (utcHours === 21 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}120000.png`;
+                    else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
+                    else if (utcHours > 9 || (utcHours === 9 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}060000.png`;
+                    else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
+                    else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}000000.png`;
+                    else if (utcHours >= 0 || (utcHours === 0 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}210000.png`;
+                    break;
+                case 'FBJP':
+                    if (utcHours > 0 || (utcHours === 0 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}030000.png`;
+                    else if (utcHours > 18 || (utcHours === 18 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}210000.png`;
+                    else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
+                    else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}090000.png`;
+                    break;
+                case 'FBAE':
+                    if (utcHours > 13 || (utcHours === 13 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}120000.png`;
+                    else if (utcHours > 19 || (utcHours === 19 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}180000.png`;
+                    else if (utcHours > 1 || (utcHours === 1 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}000000.png`;
+                    else if (utcHours > 7 || (utcHours === 7 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}060000.png`;
+                    break;
+            }
+            return url;
+        }
+
+        function showImage(type) {
+            const utc = getUTCDateFromLocal();
+            const url = getURL(type, utc);
+            document.getElementById('weather-image').src = url;
+            document.getElementById('debug').innerText = `UTC: ${utc.date.toISOString()}\nURL: ${url}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>天気図表示</h1>
+    <div class="button-container">
+        <button onclick="showImage('ASAS')">ASAS</button>
+        <button onclick="showImage('FSAS24')">FSAS24</button>
+        <button onclick="showImage('AUPQ78')">AUPQ78</button>
+        <button onclick="showImage('AUPQ35')">AUPQ35</button>
+        <button onclick="showImage('AUPA25')">AUPA25</button>
+        <button onclick="showImage('AUPA20')">AUPA20</button>
+        <button onclick="showImage('FUPA502')">FUPA502</button>
+        <button onclick="showImage('FUPA302')">FUPA302</button>
+        <button onclick="showImage('FUPA252')">FUPA252</button>
+        <button onclick="showImage('AXJP140')">AXJP140</button>
+        <button onclick="showImage('FXJP106')">FXJP106</button>
+        <button onclick="showImage('ABJP')">ABJP</button>
+        <button onclick="showImage('FBJP')">FBJP</button>
+        <button onclick="showImage('FBAE')">FBAE</button>
+    </div>
+    <img id="weather-image" alt="天気図がここに表示されます">
+    <div id="debug"></div>
+</body>
+</html>
