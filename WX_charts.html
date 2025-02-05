@@ -126,13 +126,13 @@
                     else url = `${base}QCTD92_RJTD_${utc.prevFormatted}210000.png`;
                     break;
                 case 'ABJP':
-                    if (utcHours > 21 || (utcHours === 21 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}120000.png`;
+                    if (utcHours > 21 || (utcHours === 21 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}180000.png`;
                     else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
                     else if (utcHours > 9 || (utcHours === 9 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}060000.png`;
                     else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}000000.png`;
                     else if (utcHours >= 0 || (utcHours === 0 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.prevFormatted}210000.png`;
-                    else url = `${base}QBMA98_RJTD_${utc.prevFormatted}120000.png`;
+                    else url = `${base}QBMA98_RJTD_${utc.prevFormatted}180000.png`;
                     break;
                 case 'FBJP':
                     if (utcHours > 18 || (utcHours === 18 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
@@ -180,7 +180,7 @@
         <button onclick="showImage('FBAE')">FBAE</button>
     </div>
     <img id="weather-image" alt="天気図がここに表示されます">
-    <!-- <div id="debug"></div> -->
+    <div id="debug"></div><!-- -->
     <h1></h1>
 </body>
 </html>
