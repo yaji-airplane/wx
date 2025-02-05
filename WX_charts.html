@@ -65,10 +65,10 @@
 
             switch(type) {
                 case 'ASAS':
-                    if (utcHours > 20 || (utcHours === 20 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}180000.png`;
-                    else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
-                    else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
+                    if (utcHours > 20 || (utcHours === 20 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}180000.png`;
+                    else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
+                    else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
+                    else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
                     else url = `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`; // この行を追加
                     break;
                 case 'FSAS24':
