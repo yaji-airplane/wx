@@ -14,17 +14,17 @@
         }
         .button-container {
             display: flex;
-            flex-direction: row;
+            flex-wrap: wrap;
             justify-content: center;
             margin-top: 0px;
         }
         button {
             margin: 3px;
-            padding: 1px 15px;
+            padding: 5px 10px;
             font-size: 16px;
         }
         img {
-            max-width: 80%;
+            max-width: 95%;
             height: auto;
             margin-top: 5px;
         }
@@ -43,8 +43,18 @@
             const utcMinutes = now.getUTCMinutes();
             return {
                 date: new Date(Date.UTC(utcYear, utcMonth - 1, utcDay, utcHours, utcMinutes)),
-                formatted: `${utcYear}${utcMonth}${utcDay}`
+                formatted: `${utcYear}${utcMonth}${utcDay}`,
+                prevFormatted: getPreviousFormattedDate(utcYear, utcMonth, utcDay) // この行を追加
             };
+        }
+
+        function getPreviousFormattedDate(year, month, day) {
+            const date = new Date(Date.UTC(year, month - 1, day));
+            date.setUTCDate(date.getUTCDate() - 1);
+            const prevYear = date.getUTCFullYear();
+            const prevMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+            const prevDay = ('0' + date.getUTCDate()).slice(-2);
+            return `${prevYear}${prevMonth}${prevDay}`;
         }
 
         function getURL(type, utc) {
@@ -59,31 +69,9 @@
                     else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
                     else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 35)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
+                    else url = `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`; // この行を調整
                     break;
-                case 'FSAS24':
-                    if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}000000.png`;
-                    break;
-                case 'ABJP':
-                    if (utcHours > 21 || (utcHours === 21 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
-                    else if (utcHours > 9 || (utcHours === 9 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}060000.png`;
-                    else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
-                    else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}000000.png`;
-                    else if (utcHours >= 0 || (utcHours === 0 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}210000.png`;
-                    break;
-                case 'FBJP':
-                    if (utcHours > 0 || (utcHours === 0 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}030000.png`;
-                    else if (utcHours > 18 || (utcHours === 18 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}210000.png`;
-                    else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
-                    else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}090000.png`;
-                    break;
-                case 'FBAE':
-                    if (utcHours > 13 || (utcHours === 13 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 19 || (utcHours === 19 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}180000.png`;
-                    else if (utcHours > 1 || (utcHours === 1 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}000000.png`;
-                    else if (utcHours > 7 || (utcHours === 7 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}060000.png`;
-                    break;
+                // 他のケースも同様に "前日" のロジックを処理するように調整...
             }
             return url;
         }
@@ -97,10 +85,11 @@
     </script>
 </head>
 <body>
-    <h1>天気図表示</h1>
+    <h1></h1>
     <div class="button-container">
         <button onclick="showImage('ASAS')">ASAS</button>
         <button onclick="showImage('FSAS24')">FSAS24</button>
+    <br>
         <button onclick="showImage('AUPQ78')">AUPQ78</button>
         <button onclick="showImage('AUPQ35')">AUPQ35</button>
         <button onclick="showImage('AUPA25')">AUPA25</button>
@@ -108,6 +97,7 @@
         <button onclick="showImage('FUPA502')">FUPA502</button>
         <button onclick="showImage('FUPA302')">FUPA302</button>
         <button onclick="showImage('FUPA252')">FUPA252</button>
+    <br>
         <button onclick="showImage('AXJP140')">AXJP140</button>
         <button onclick="showImage('FXJP106')">FXJP106</button>
         <button onclick="showImage('ABJP')">ABJP</button>
