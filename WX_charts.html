@@ -44,10 +44,9 @@
             return {
                 date: new Date(Date.UTC(utcYear, utcMonth - 1, utcDay, utcHours, utcMinutes)),
                 formatted: `${utcYear}${utcMonth}${utcDay}`,
-                prevFormatted: getPreviousFormattedDate(utcYear, utcMonth, utcDay) // この行を追加
+                prevFormatted: getPreviousFormattedDate(utcYear, utcMonth, utcDay)
             };
         }
-
         function getPreviousFormattedDate(year, month, day) {
             const date = new Date(Date.UTC(year, month - 1, day));
             date.setUTCDate(date.getUTCDate() - 1);
@@ -56,7 +55,6 @@
             const prevDay = ('0' + date.getUTCDate()).slice(-2);
             return `${prevYear}${prevMonth}${prevDay}`;
         }
-
         function getURL(type, utc) {
             const utcHours = utc.date.getUTCHours();
             const utcMinutes = utc.date.getUTCMinutes();
@@ -69,52 +67,52 @@
                     else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
                     else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`; // この行を追加
+                    else url = `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`;
                     break;
                 case 'FSAS24':
                     if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QACE98_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QACE98_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'AUPQ78':
                     if (utcHours > 15 || (utcHours === 15 && utcMinutes >= 35)) url = `${base}QHBA70_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 35)) url = `${base}QHBA70_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHBA70_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHBA70_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'AUPQ35':
                     if (utcHours > 15 || (utcHours === 15 && utcMinutes >= 35)) url = `${base}QHBA30_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 35)) url = `${base}QHBA30_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHBA30_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHBA30_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'AUPA25':
                     if (utcHours > 15 || (utcHours === 15 && utcMinutes >= 35)) url = `${base}QHQA25_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 35)) url = `${base}QHQA25_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHQA25_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHQA25_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'AUPA20':
                     if (utcHours > 15 || (utcHours === 15 && utcMinutes >= 35)) url = `${base}QHQA20_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 35)) url = `${base}QHQA20_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHQA20_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHQA20_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'FUPA502':
                     if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 5)) url = `${base}QHQE50_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 5)) url = `${base}QHQE50_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHQE50_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHQE50_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'FUPA302':
                     if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 5)) url = `${base}QHQE30_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 5)) url = `${base}QHQE30_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHQE30_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QHQE30_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'FUPA252':
                     if (utcHours > 16 || (utcHours === 16 && utcMinutes >= 5)) url = `${base}QHQE25_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 5)) url = `${base}QHQE25_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QHQE25_RJTD_${utc.prevFormatted}120000.png`; // この行を調整
+                    else url = `${base}QHQE25_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'AXJP140':
                     if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 10)) url = `${base}QCTA91_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 10)) url = `${base}QCTA91_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QCTA91_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QCTA91_RJTD_${utc.prevFormatted}120000.png`;
                     break; 
                 case 'FXJP106':
                     if (utcHours > 23 || (utcHours === 23 && utcMinutes >= 35)) url = `${base}QCTD92_RJTD_${utc.formatted}210000.png`;
@@ -125,7 +123,7 @@
                     else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 35)) url = `${base}QCTD92_RJTD_${utc.formatted}060000.png`;
                     else if (utcHours > 5 || (utcHours === 5 && utcMinutes >= 35)) url = `${base}QCTD92_RJTD_${utc.formatted}030000.png`;
                     else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 35)) url = `${base}QCTD92_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QCTD92_RJTD_${utc.prevFormatted}210000.png`; // この行を追加
+                    else url = `${base}QCTD92_RJTD_${utc.prevFormatted}210000.png`;
                     break;
                 case 'ABJP':
                     if (utcHours > 21 || (utcHours === 21 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}120000.png`;
@@ -134,27 +132,25 @@
                     else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
                     else if (utcHours > 3 || (utcHours === 3 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.formatted}000000.png`;
                     else if (utcHours >= 0 || (utcHours === 0 && utcMinutes >= 30)) url = `${base}QBMA98_RJTD_${utc.prevFormatted}210000.png`;
-                    else url = `${base}QBMA98_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}QBMA98_RJTD_${utc.prevFormatted}120000.png`;
                     break;
                 case 'FBJP':
                     if (utcHours > 18 || (utcHours === 18 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
                     else if (utcHours > 12 || (utcHours === 12 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}090000.png`;
                     else if (utcHours > 6 || (utcHours === 6 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.formatted}030000.png`;
                     else if (utcHours > 0 || (utcHours === 0 && utcMinutes >= 35)) url = `${base}QBEY10_RJTD_${utc.prevFormatted}210000.png`;
-                    else url = `${base}QBEY10_RJTD_${utc.prevFormatted}150000.png`; // この行を追加
+                    else url = `${base}QBEY10_RJTD_${utc.prevFormatted}150000.png`;
                     break;
                 case 'FBAE':
                     if (utcHours > 19 || (utcHours === 19 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}120000.png`;
                     else if (utcHours > 13 || (utcHours === 13 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}060000.png`;
                     else if (utcHours > 7 || (utcHours === 7 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.formatted}000000.png`;
                     else if (utcHours > 1 || (utcHours === 1 && utcMinutes >= 35)) url = `${base}FBAE_RJTD_${utc.prevFormatted}180000.png`;
-                    else url = `${base}FBAE_RJTD_${utc.prevFormatted}120000.png`; // この行を追加
+                    else url = `${base}FBAE_RJTD_${utc.prevFormatted}120000.png`;
                     break;
-
             }
             return url;
         }
-
         function showImage(type) {
             const utc = getUTCDateFromLocal();
             const url = getURL(type, utc);
