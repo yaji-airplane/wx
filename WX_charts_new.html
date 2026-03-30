@@ -32,15 +32,11 @@
             margin-top: 5px;
             font-size: 14px;
         }
-        .nav-container {
-            margin-top: 10px;
-            font-size: 18px;
-        }
     </style>
 
     <script>
 
-        /* ▼▼▼ 追加：履歴管理 ▼▼▼ */
+        /* ▼▼▼ 履歴管理 ▼▼▼ */
         let historyIndex = 0;   // 0 = 最新、最大 4 まで
         const maxHistory = 4;
         let currentType = null; // ASAS / FSAS24 を記録
@@ -145,11 +141,11 @@
         <button onclick="showImage('FSAS24')">FSAS24</button>
     </div>
 
-    <!-- ▼ ラジオボタン追加 ▼ -->
-    <div class="nav-container">
-        <label><input type="radio" name="nav" onclick="goPrev()"> ← </label>
-        <label><input type="radio" name="nav" onclick="goLatest()"> 最新 </label>
-        <label><input type="radio" name="nav" onclick="goNext()"> → </label>
+    <!-- ▼ ナビゲーションボタン（ラジオ → 通常ボタンへ変更） ▼ -->
+    <div class="button-container">
+        <button onclick="goPrev()">←</button>
+        <button onclick="goLatest()">最新</button>
+        <button onclick="goNext()">→</button>
     </div>
 
     <img id="weather-image" alt="天気図がここに表示されます">
