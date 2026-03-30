@@ -37,110 +37,218 @@
 
     <script>
 
-        /* ▼▼▼ 履歴管理 ▼▼▼ */
+        /* ▼▼▼ 天気図ルール定義（ここに追加するだけで拡張可能） ▼▼▼ */
+        const chartRules = {
+            ASAS: {
+                cycleHours: 6,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 20 || (h === 20 && m >= 40)) return `${base}QACA98_RJTD_${utc.formatted}180000.png`;
+                    if (h > 14 || (h === 14 && m >= 40)) return `${base}QACA98_RJTD_${utc.formatted}120000.png`;
+                    if (h > 8  || (h === 8  && m >= 40)) return `${base}QACA98_RJTD_${utc.formatted}060000.png`;
+                    if (h > 2  || (h === 2  && m >= 40)) return `${base}QACA98_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`;
+                }
+            },
+
+            FSAS24: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 17 || (h === 17 && m >= 35)) return `${base}QACE98_RJTD_${utc.formatted}120000.png`;
+                    if (h > 4  || (h === 4  && m >= 35)) return `${base}QACE98_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QACE98_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+
+            /* ▼ AUP 系（12h周期） ▼ */
+            AUPQ78: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 15 || (h === 15 && m >= 35)) return `${base}QHBA70_RJTD_${utc.formatted}120000.png`;
+                    if (h > 3  || (h === 3  && m >= 35)) return `${base}QHBA70_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHBA70_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+            AUPQ35: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 15 || (h === 15 && m >= 35)) return `${base}QHBA30_RJTD_${utc.formatted}120000.png`;
+                    if (h > 3  || (h === 3  && m >= 35)) return `${base}QHBA30_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHBA30_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+            AUPA25: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 15 || (h === 15 && m >= 35)) return `${base}QHQA25_RJTD_${utc.formatted}120000.png`;
+                    if (h > 3  || (h === 3  && m >= 35)) return `${base}QHQA25_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHQA25_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+            AUPA20: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 15 || (h === 15 && m >= 35)) return `${base}QHQA20_RJTD_${utc.formatted}120000.png`;
+                    if (h > 3  || (h === 3  && m >= 35)) return `${base}QHQA20_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHQA20_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+
+            /* ▼ FUP 系（12h周期） ▼ */
+            FUPA502: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 16 || (h === 16 && m >= 5)) return `${base}QHQE50_RJTD_${utc.formatted}120000.png`;
+                    if (h > 4  || (h === 4  && m >= 5)) return `${base}QHQE50_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHQE50_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+            FUPA302: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 16 || (h === 16 && m >= 5)) return `${base}QHQE30_RJTD_${utc.formatted}120000.png`;
+                    if (h > 4  || (h === 4  && m >= 5)) return `${base}QHQE30_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHQE30_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+            FUPA252: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 16 || (h === 16 && m >= 5)) return `${base}QHQE25_RJTD_${utc.formatted}120000.png`;
+                    if (h > 4  || (h === 4  && m >= 5)) return `${base}QHQE25_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QHQE25_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+
+            /* ▼ AXJP（12h周期） ▼ */
+            AXJP140: {
+                cycleHours: 12,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 14 || (h === 14 && m >= 10)) return `${base}QCTA91_RJTD_${utc.formatted}120000.png`;
+                    if (h > 2  || (h === 2  && m >= 10)) return `${base}QCTA91_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QCTA91_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            },
+
+            /* ▼ FXJP（3h周期） ▼ */
+            FXJP106: {
+                cycleHours: 3,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 23 || (h === 23 && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}210000.png`;
+                    if (h > 20 || (h === 20 && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}180000.png`;
+                    if (h > 17 || (h === 17 && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}150000.png`;
+                    if (h > 14 || (h === 14 && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}120000.png`;
+                    if (h > 11 || (h === 11 && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}090000.png`;
+                    if (h > 8  || (h === 8  && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}060000.png`;
+                    if (h > 5  || (h === 5  && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}030000.png`;
+                    if (h > 2  || (h === 2  && m >= 35)) return `${base}QCTD92_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QCTD92_RJTD_${utc.prevFormatted}210000.png`;
+                }
+            },
+
+            /* ▼ ABJP（3h周期） ▼ */
+            ABJP: {
+                cycleHours: 3,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 21 || (h === 21 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}180000.png`;
+                    if (h > 12 || (h === 12 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
+                    if (h > 9  || (h === 9  && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}060000.png`;
+                    if (h > 6  || (h === 6  && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
+                    if (h > 3  || (h === 3  && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}000000.png`;
+                    return `${base}QBMA98_RJTD_${utc.prevFormatted}210000.png`;
+                }
+            },
+
+            /* ▼ FBJP（3h周期） ▼ */
+            FBJP: {
+                cycleHours: 3,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 18 || (h === 18 && m >= 35)) return `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
+                    if (h > 12 || (h === 12 && m >= 35)) return `${base}QBEY10_RJTD_${utc.formatted}090000.png`;
+                    if (h > 6  || (h === 6  && m >= 35)) return `${base}QBEY10_RJTD_${utc.formatted}030000.png`;
+                    return `${base}QBEY10_RJTD_${utc.prevFormatted}210000.png`;
+                }
+            },
+
+            /* ▼ FBAE（6h周期） ▼ */
+            FBAE: {
+                cycleHours: 6,
+                pattern: (utc, base) => {
+                    const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
+                    if (h > 19 || (h === 19 && m >= 35)) return `${base}FBAE_RJTD_${utc.formatted}120000.png`;
+                    if (h > 13 || (h === 13 && m >= 35)) return `${base}FBAE_RJTD_${utc.formatted}060000.png`;
+                    if (h > 7  || (h === 7  && m >= 35)) return `${base}FBAE_RJTD_${utc.formatted}000000.png`;
+                    if (h > 1  || (h === 1  && m >= 35)) return `${base}FBAE_RJTD_${utc.prevFormatted}180000.png`;
+                    return `${base}FBAE_RJTD_${utc.prevFormatted}120000.png`;
+                }
+            }
+        };
+
+        /* ▼▼▼ 共通ロジック ▼▼▼ */
+
         let historyIndex = 0;
         const maxHistory = 4;
         let currentType = null;
 
-        /* ▼ UTC 取得 ▼ */
         function getUTCDateFromLocal(offsetHours = 0) {
             const now = new Date();
             now.setUTCHours(now.getUTCHours() - offsetHours);
 
-            const utcYear = now.getUTCFullYear();
-            const utcMonth = ('0' + (now.getUTCMonth() + 1)).slice(-2);
-            const utcDay = ('0' + now.getUTCDate()).slice(-2);
+            const y = now.getUTCFullYear();
+            const m = ('0' + (now.getUTCMonth() + 1)).slice(-2);
+            const d = ('0' + now.getUTCDate()).slice(-2);
 
             return {
                 date: now,
-                formatted: `${utcYear}${utcMonth}${utcDay}`,
-                prevFormatted: getPreviousFormattedDate(utcYear, utcMonth, utcDay)
+                formatted: `${y}${m}${d}`,
+                prevFormatted: getPreviousFormattedDate(y, m, d)
             };
         }
 
         function getPreviousFormattedDate(year, month, day) {
             const date = new Date(Date.UTC(year, month - 1, day));
             date.setUTCDate(date.getUTCDate() - 1);
-            const prevYear = date.getUTCFullYear();
-            const prevMonth = ('0' + (date.getUTCMonth() + 1)).slice(-2);
-            const prevDay = ('0' + date.getUTCDate()).slice(-2);
-            return `${prevYear}${prevMonth}${prevDay}`;
+            const y = date.getUTCFullYear();
+            const m = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+            const d = ('0' + date.getUTCDate()).slice(-2);
+            return `${y}${m}${d}`;
         }
 
-        /* ▼ URL 生成 ▼ */
-        function getURL(type, utc) {
-            const utcHours = utc.date.getUTCHours();
-            const utcMinutes = utc.date.getUTCMinutes();
-            const base = `https://www3.metair.go.jp/pict/${type}/`;
-            let url = '';
-
-            switch(type) {
-                case 'ASAS':
-                    if (utcHours > 20 || (utcHours === 20 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}180000.png`;
-                    else if (utcHours > 14 || (utcHours === 14 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 8 || (utcHours === 8 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}060000.png`;
-                    else if (utcHours > 2 || (utcHours === 2 && utcMinutes >= 40)) url = `${base}QACA98_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QACA98_RJTD_${utc.prevFormatted}180000.png`;
-                    break;
-
-                case 'FSAS24':
-                    if (utcHours > 17 || (utcHours === 17 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}120000.png`;
-                    else if (utcHours > 4 || (utcHours === 4 && utcMinutes >= 35)) url = `${base}QACE98_RJTD_${utc.formatted}000000.png`;
-                    else url = `${base}QACE98_RJTD_${utc.prevFormatted}120000.png`;
-                    break;
-            }
-            return url;
-        }
-
-        /* ▼ 画像の Last-Modified を取得 ▼ */
-        async function fetchImageTimestamp(url) {
-            try {
-                const response = await fetch(url, { method: "HEAD" });
-
-                return {
-                    lastModified: response.headers.get("Last-Modified"),
-                    serverDate: response.headers.get("Date")
-                };
-            } catch (e) {
-                return null;
-            }
-        }
-
-        /* ▼ 画像表示（履歴対応） ▼ */
         function showImage(type) {
             currentType = type;
             historyIndex = 0;
             updateImage();
         }
 
-        async function updateImage() {
+        function updateImage() {
             if (!currentType) return;
 
-            const offsetHours = (currentType === 'FSAS24')
-                ? historyIndex * 12
-                : historyIndex * 6;
+            const rule = chartRules[currentType];
+            const offsetHours = historyIndex * rule.cycleHours;
 
             const utc = getUTCDateFromLocal(offsetHours);
-            const url = getURL(currentType, utc);
+            const base = `https://www3.metair.go.jp/pict/${currentType}/`;
+
+            const url = rule.pattern(utc, base);
 
             document.getElementById('weather-image').src = url;
 
-            let debugText =
+            document.getElementById('debug').innerText =
                 `履歴: ${historyIndex}\nUTC: ${utc.date.toISOString()}\nURL: ${url}`;
-
-            /* ▼ Last-Modified を取得して debug に追加 ▼ */
-            const info = await fetchImageTimestamp(url);
-if (info && info.lastModified) {
-    debugText += `\nLast-Modified: ${info.lastModified}`;
-} else {
-    debugText += `\nLast-Modified: N/A`;
-}
-
-
-            document.getElementById('debug').innerText = debugText;
         }
 
-        /* ▼ ナビゲーション ▼ */
         function goLatest() {
             historyIndex = 0;
             updateImage();
@@ -168,16 +276,27 @@ if (info && info.lastModified) {
     <div class="button-container">
         <button onclick="showImage('ASAS')">ASAS</button>
         <button onclick="showImage('FSAS24')">FSAS24</button>
+        <button onclick="showImage('AUPQ78')">AUPQ78</button>
+        <button onclick="showImage('AUPQ35')">AUPQ35</button>
+        <button onclick="showImage('AUPA25')">AUPA25</button>
+        <button onclick="showImage('AUPA20')">AUPA20</button>
+        <button onclick="showImage('FUPA502')">FUPA502</button>
+        <button onclick="showImage('FUPA302')">FUPA302</button>
+        <button onclick="showImage('FUPA252')">FUPA252</button>
+        <button onclick="showImage('AXJP140')">AXJP140</button>
+        <button onclick="showImage('FXJP106')">FXJP106</button>
+        <button onclick="showImage('ABJP')">ABJP</button>
+        <button onclick="showImage('FBJP')">FBJP</button>
+        <button onclick="showImage('FBAE')">FBAE</button>
     </div>
 
     <div class="button-container">
         <button onclick="goPrev()">←</button>
         <button onclick="goLatest()">最新</button>
-        <button onclick="goNext()">→</button>
+	<button onclick="goNext()">→</button>
     </div>
 
     <img id="weather-image" alt="天気図がここに表示されます">
-    <div id="debug"></div>
 
 </body>
 </html>
