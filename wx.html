@@ -162,6 +162,8 @@
                 pattern: (utc, base) => {
                     const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
                     if (h > 21 || (h === 21 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}180000.png`;
+                    if (h > 18 || (h === 18 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
+                    if (h > 15 || (h === 15 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
                     if (h > 12 || (h === 12 && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}090000.png`;
                     if (h > 9  || (h === 9  && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}060000.png`;
                     if (h > 6  || (h === 6  && m >= 30)) return `${base}QBMA98_RJTD_${utc.formatted}030000.png`;
@@ -170,9 +172,9 @@
                 }
             },
 
-            /* ▼ FBJP（3h周期） ▼ */
+            /* ▼ FBJP（6h周期） ▼ */
             FBJP: {
-                cycleHours: 3,
+                cycleHours: 6,
                 pattern: (utc, base) => {
                     const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
                     if (h > 18 || (h === 18 && m >= 35)) return `${base}QBEY10_RJTD_${utc.formatted}150000.png`;
@@ -199,7 +201,7 @@
         /* ▼▼▼ 共通ロジック ▼▼▼ */
 
         let historyIndex = 0;
-        const maxHistory = 4;
+        const maxHistory = 6;
         let currentType = null;
 
         function getUTCDateFromLocal(offsetHours = 0) {
@@ -246,7 +248,7 @@
             document.getElementById('weather-image').src = url;
 
             document.getElementById('debug').innerText =
-                `履歴: ${historyIndex}\nUTC: ${utc.date.toISOString()}\nURL: ${url}`;
+                `UTC: ${utc.date.toISOString()}\nURL: ${url}\nIndex: ${historyIndex}`;
         }
 
         function goLatest() {
@@ -289,14 +291,15 @@
         <button onclick="showImage('FBJP')">FBJP</button>
         <button onclick="showImage('FBAE')">FBAE</button>
     </div>
-
+    <hr />
     <div class="button-container">
-        <button onclick="goPrev()">←</button>
-        <button onclick="goLatest()">最新</button>
-	<button onclick="goNext()">→</button>
+        <button onclick="goPrev()">← Back</button>
+        <button onclick="goLatest()">Latest</button>
+	<button onclick="goNext()">Forward →</button>
     </div>
 
     <img id="weather-image" alt="天気図がここに表示されます">
-
+	<div id="debug"></div>
+    <h1></h1>
 </body>
 </html>
