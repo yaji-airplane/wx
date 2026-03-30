@@ -56,7 +56,7 @@
                 pattern: (utc, base) => {
                     const h = utc.date.getUTCHours(), m = utc.date.getUTCMinutes();
                     if (h > 17 || (h === 17 && m >= 35)) return `${base}QACE98_RJTD_${utc.formatted}120000.png`;
-                    if (h > 4  || (h === 4  && m >= 35)) return `${base}QACE98_RJTD_${utc.formatted}000000.png`;
+                    if (h > 5  || (h === 5  && m >= 35)) return `${base}QACE98_RJTD_${utc.formatted}000000.png`;
                     return `${base}QACE98_RJTD_${utc.prevFormatted}120000.png`;
                 }
             },
