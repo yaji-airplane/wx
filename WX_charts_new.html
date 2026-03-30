@@ -103,7 +103,12 @@
         function updateImage() {
             if (!currentType) return;
 
-            const utc = getUTCDateFromLocal(historyIndex * 6); 
+            // ASAS → 6h刻み、FSAS24 → 12h刻み
+            const offsetHours = (currentType === 'FSAS24')
+                ? historyIndex * 12
+                : historyIndex * 6;
+
+            const utc = getUTCDateFromLocal(offsetHours);
             const url = getURL(currentType, utc);
 
             document.getElementById('weather-image').src = url;
@@ -141,7 +146,7 @@
         <button onclick="showImage('FSAS24')">FSAS24</button>
     </div>
 
-    <!-- ▼ ナビゲーションボタン（ラジオ → 通常ボタンへ変更） ▼ -->
+    <!-- ▼ ナビゲーションボタン ▼ -->
     <div class="button-container">
         <button onclick="goPrev()">←</button>
         <button onclick="goLatest()">最新</button>
