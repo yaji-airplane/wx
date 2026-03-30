@@ -130,9 +130,12 @@
 
             /* ▼ Last-Modified を取得して debug に追加 ▼ */
             const info = await fetchImageTimestamp(url);
-            if (info && info.lastModified) {
-                debugText += `\nLast-Modified: ${info.lastModified}`;
-            }
+if (info && info.lastModified) {
+    debugText += `\nLast-Modified: ${info.lastModified}`;
+} else {
+    debugText += `\nLast-Modified: N/A`;
+}
+
 
             document.getElementById('debug').innerText = debugText;
         }
